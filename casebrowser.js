@@ -32,6 +32,7 @@ function save_engine(){
   img.setAttribute('src',icon_url);
   img.setAttribute('alt',domain);
   var li=document.createElement('li')
+  li.setAttribute("onclick","this.classList.toggle('tag_box active')");
   li.appendChild(img);
   container.insertBefore(li,container.lastElementChild);
   document.getElementsByClassName('setting_box')[0].classList.toggle('active');

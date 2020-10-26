@@ -81,6 +81,10 @@
   border: 2px solid #7d6cfc;
   cursor: pointer
 }
+.tag_box.active li{
+  border: 2px solid #7d6cfc;
+  backgound:#7d6cfc;
+}
 .tag_box img {
   width: 70px;
   height: 70px;
@@ -110,7 +114,7 @@
   width:30%;
   line-height: 25vh;
   background: #f1f1f1;
-  font-size: 300%;
+  font-size : larger;
   color: #ccc;
 }
 .info_input{

@@ -1,0 +1,23 @@
+<html>
+<head>
+<link type=text/css  rel='stylesheet' href='casebrowser.css' >
+<script type="text/javascript" src='casebroeser.js'></script>
+</head>
+<div class='hover_frame'>
+  <div class='input_box'>
+      <h1>CASEBROWSER</h1>
+      <input type='text' value='请输入关键词或网址'
+        onfocus="if(this.value=='请输入关键词或网址'){this.value='';}";
+        onblur="if(this.value==''){this.value='请输入关键词或网址';}";
+        onkeydown="if(event.which==13){return search()}";
+        />
+      <button onclick='search()'>搜索</button>
+  </div>
+  <div class='tag_box'>
+    <ul>
+      <li><img src="archdaily.png" alt="archdaily" onclick="this.classList.toggle('selected')"></li>
+      <li><img src="baidu.svg" alt="baidu"></li>
+    </ul>
+  </div>
+  </div>
+</html>

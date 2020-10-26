@@ -15,9 +15,24 @@
   </div>
   <div class='tag_box'>
     <ul>
-      <li><img src="archdaily.png" alt="archdaily" onclick="this.classList.toggle('selected')"></li>
       <li><img src="baidu.svg" alt="baidu"></li>
+      <li><img src="google.png" alt="google"></li>
+      <li><img src="weixin.jpg" alt="weixin"></li>
+      <li><img src="archdaily.png" alt="archdaily"></li>
+      <li><img src="gooood.png" alt="gooood"></li>
+      <li><img src="archcollege.png" alt="baidu"></li>
+      <li><img src="archiposition.svg" alt="archiposition"></li>
+      <li><img src="ikuku.png" alt="ikuku"></li>
+      <li onclick="document.getElementsByClassName('setting_box')[0].classList.toggle('active')">+</li>
     </ul>
+  </div>
+  <div class='setting_box'>
+    <span class='img_input'>+</span>
+    <div class='info_input'>
+    <span>网站域名：<input type=text value='e.g baidu'></span>
+    <span>搜索地址：<input type=text value="关键词用{%s}代替"></span>
+    <br>
+    <span><button onclick="add_engine()">保存</button></span>
   </div>
   </div>
 </html>

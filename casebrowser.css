@@ -134,9 +134,21 @@
   color:#ccc;
   border: 0;
 }
-.info_input span button{
+.info_input ul{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+.info_input ul li{
+  float: right;
+  margin:2%;
   color:#fff;
+  list-style: none;
   border: 0;
   background: #ccc;
   width:50px;
+}
+.info_input ul li:hover{
+  background: #7d6cfc;
+  cursor: pointer;
 }

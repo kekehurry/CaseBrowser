@@ -1,7 +1,7 @@
 <html>
 <head>
 <link type=text/css  rel='stylesheet' href='casebrowser.css' >
-<script type="text/javascript" src='casebroeser.js'></script>
+<script type="text/javascript" src='casebrowser.js'></script>
 </head>
 <div class='hover_frame'>
   <div class='input_box'>
@@ -15,24 +15,20 @@
   </div>
   <div class='tag_box'>
     <ul>
-      <li><img src="baidu.svg" alt="baidu"></li>
-      <li><img src="google.png" alt="google"></li>
-      <li><img src="weixin.jpg" alt="weixin"></li>
-      <li><img src="archdaily.png" alt="archdaily"></li>
-      <li><img src="gooood.png" alt="gooood"></li>
-      <li><img src="archcollege.png" alt="baidu"></li>
-      <li><img src="archiposition.svg" alt="archiposition"></li>
-      <li><img src="ikuku.png" alt="ikuku"></li>
-      <li onclick="document.getElementsByClassName('setting_box')[0].classList.toggle('active')">+</li>
+      <li onclick="show_setting_page()">+</li>
     </ul>
   </div>
   <div class='setting_box'>
-    <span class='img_input'>+</span>
+    <span class='img_input'>icon</span>
     <div class='info_input'>
-    <span>网站域名：<input type=text value='e.g baidu'></span>
-    <span>搜索地址：<input type=text value="关键词用{%s}代替"></span>
+    <span>网站域名：<input id='name_input' type=text disabled="disabled"></span>
+    <span>搜索地址：<input id='url_input' type=text onkeypress="if(event.which==13){add_engine()}"></span>
     <br>
-    <span><button onclick="add_engine()">保存</button></span>
+    <ul>
+      <li onclick="add_engine()">确定</li>
+      <li onclick="show_setting_page()">取消</li>
+      <li onclick="save_engine()">保存</li>
+    </ul>
   </div>
   </div>
 </html>

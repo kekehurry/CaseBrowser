@@ -35,7 +35,7 @@
     padding-left: 10px;
     }
 .input_box button {
-    min-height: 30px;
+    height: 30px;
     min-width: 4%;
     border-radius: 5px;
     border: 0;
@@ -59,7 +59,11 @@
   margin: 2% 8% 0 8%;
   list-style: none;
 }
-.tag_box li {
+.tag_box ul li:hover {
+  border: 2px solid #7d6cfc;
+  cursor: pointer
+}
+.engine_box {
   display: inline-block;
   overflow: hidden;
   float:left;
@@ -71,21 +75,18 @@
   border-radius: 10px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
   background:#fff;
-  font-size: 40px;
+  font-size: xx-large;
   font-weight: bold;
   color:#7d6cfc;
   text-align: center;
   line-height: 70px;
 }
-.tag_box li:hover {
+.engine_box.active {
   border: 2px solid #7d6cfc;
-  cursor: pointer
+  background: #7d6cfc;
+  color:#fff;
 }
-.tag_box.active li{
-  border: 2px solid #7d6cfc;
-  backgound:#7d6cfc;
-}
-.tag_box img {
+.engine_box img {
   width: 70px;
   height: 70px;
   border-radius: 70px;

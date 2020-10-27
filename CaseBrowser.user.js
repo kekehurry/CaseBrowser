@@ -9,6 +9,7 @@
 // @grant        GM_download
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_openInTab
 // @require      http://code.jquery.com/jquery-2.1.4.min.js
 // @require      http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js
 // @require      https://openuserjs.org/src/libs/kekehurry/jQuery.print.js
@@ -220,180 +221,275 @@
     $("body").append($button);
 
 	//search_tab
-    var frame="<div class='hover_frame'>\
-    	<div class='input_box'>\
-      		<h1>CASEBROWSER</h1>\
-      		<input type='text' value='请输入关键词或网址'\
-      			onfocus=\"if(this.value=='请输入关键词或网址'){this.value='';}\";\
-      			onblur=\"if(this.value==''){this.value='请输入关键词或网址';}\";\
-      			onkeydown=\"if(event.which==13){return search()}\";\
-      			/>\
-      		<button onclick='search()'>搜索</button>\
-    	</div>\
-    	<div class='content_box'>\
-      		<div class='tag_box'>\
-        		<ul>\
-        		</ul>\
-      		</div>\
-      		<div class='browser_box'>\
-      		</div>\
-      	</div>\
-    	</div>";
+    var frame="<body>\
+		<div class='hover_frame'>\
+		  <div class='input_box'>\
+		      <h1>CASEBROWSER</h1>\
+		      <input type='text' value='请输入关键词或网址'\
+		        onfocus='if(this.value==\"请输入关键词或网址\"){this.value=\"\";}'\
+		        onblur='if(this.value==\"\"){this.value=\"请输入关键词或网址\";}'\
+		        onkeydown='if(event.which==13){return search()}'\
+		        />\
+		      <button onclick='search()'>搜索</button>\
+		  </div>\
+		  <div class='tag_box'>\
+		    <ul>\
+		      <li class='engine_box' onclick='show_setting_page()'>+</li>\
+		    </ul>\
+		  </div>\
+		  <div class='setting_box'>\
+		    <span class='img_input'>icon</span>\
+		    <div class='info_input'>\
+		    <span>网站域名：<input id='name_input' type=text disabled='disabled'></span>\
+		    <span>搜索地址：<input id='url_input' type=text onkeypress='if(event.which==13){add_engine()}'></span>\
+		    <br>\
+		    <ul>\
+		      <li onclick='add_engine()'>确定</li>\
+		      <li onclick='show_setting_page()'>取消</li>\
+		      <li onclick='save_engine()'>保存</li>\
+		    </ul>\
+		  </div>\
+		  </div>\
+		</body>";
     var css="<style>\
-    	.hover_frame{\
-  			position:fixed;\
-  			background: linear-gradient(#7d6cfc, #c63cc6);\
-  			width:100%;\
-  			height:100%;\
-  			left:0%;\
-  			top:0%;\
-  			overflow: hidden;\
-  			overflow-y: scroll;\
-  			z-index:9998;\
-			}\
+		.hover_frame{\
+			position:fixed;\
+			background: linear-gradient(#7d6cfc, #c63cc6);\
+			width:100%;\
+			height:100%;\
+			left:0%;\
+			top:0%;\
+			overflow: hidden;\
+			overflow-y: scroll;\
+			z-index:9998;\
+		}\
 		.hover_frame::-webkit-scrollbar{\
-  			width:0;\
-			}\
+			width:0;\
+		}\
 		.input_box {\
-        	padding-top: 15%;\
-        	width: 100%;\
-        	text-align: center;\
-      		}\
-    	.input_box.active {\
-        	padding-top: 0;\
-      		}\
-      	.input_box h1{\
-  			color: #fff;\
-  			text-align: center;\
-  			font-size:250%;\
-      		}\
-    	.input_box input {\
-        	min-width: 60%;\
-        	min-height: 30px;\
-        	border-radius: 5px;\
-        	border: 0;\
-        	line-height: 30px;\
-        	color: gray;\
-        	padding-left: 10px;\
-      		}\
-    	.input_box button {\
-        	min-height: 30px;\
-        	min-width: 4%;\
-        	border-radius: 5px;\
-        	border: 0;\
-        	background: #fff;\
-        	margin: 0 0 0 10px;\
-        	line-height: 30px;\
-      		}\
-    	.input_box  *:focus {\
-        	border: 0;\
-        	background: #ecf0f1;\
-        	outline: none;\
-      		}\
-      	.content_box {\
-  			display: none;\
+				padding-top: 8%;\
+				width: 100%;\
+				text-align: center;\
 			}\
-		.content_box.active {\
-  			display: block;\
-  			width: 100%;\
-  			height:82%;\
+		.input_box.active {\
+				padding-top: 0;\
+			}\
+			.input_box h1{\
+			color: #fff;\
+			text-align: center;\
+			font-size:250%;\
+		}\
+		.input_box input {\
+				min-width: 60%;\
+				height: 30px;\
+				border-radius: 5px;\
+				border: 0;\
+				line-height: 30px;\
+				color: gray;\
+				padding-left: 10px;\
+			}\
+		.input_box button {\
+				height: 30px;\
+				min-width: 4%;\
+				border-radius: 5px;\
+				border: 0;\
+				background: #fff;\
+				margin: 0 0 0 10px;\
+				line-height: 30px;\
+			}\
+		.input_box  *:focus {\
+				border: 0;\
+				background: #ecf0f1;\
+				outline: none;\
 			}\
 		.tag_box {\
-  			position: relative;\
-  			margin: 2% 10% 0 10%;\
-  			height: 25px;\
-  			width: 80%;\
-  			border-style: none;\
-  			background: #7154fc;\
-			}\
+			position: relative;\
+			margin: 2% 10% 0 10%;\
+			width: 80%;\
+			border-style: none;\
+		}\
 		.tag_box ul {\
-  			padding: 0;\
-  			margin: 0;\
-  			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
-			}\
-		.tag_box li {\
-  			min-width: 50px;\
-  			float: left;\
-  			position: relative;\
-  			height: 25px;\
-  			list-style: none;\
-  			padding: 0 6px 0 6px;\
-  			margin: 0;\
-  			background: #8c62f0;\
-  			line-height: 25px;\
-  			color: #fff;\
-  			font-size: small;\
-  			text-align:center;\
-  			border-right: 1px solid #7154fc;\
-  			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
-			}\
-		.tag_box li:hover {\
-  			background: #7d6cfc;\
-  			cursor: pointer;\
-			}\
-		.browser_box {\
-  			position: relative;\
-  			margin: 0 10% 0 10%;\
-  			border: 0;\
-  			background: #fff;\
-  			width: 80%;\
-  			height: 95%;\
-  			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
-			}\
-		.browser_box iframe {\
-  			width:100%;\
-  			height:100%;\
-  			border: 0;\
-  			background: #fff;\
-			}\
-		.content_frame {\
-        	display: none;\
-      		}\
-    	.content_frame.active {\
-        	display: block;\
-      		}\
+			padding: 0;\
+			margin: 2% 8% 0 8%;\
+			list-style: none;\
+		}\
+		.tag_box ul li:hover {\
+			border: 2px solid #7d6cfc;\
+			cursor: pointer\
+		}\
+		.engine_box {\
+			display: inline-block;\
+			overflow: hidden;\
+			float:left;\
+			box-sizing: border-box;\
+			margin:2%;\
+			padding: 5px;\
+			width: 16%;\
+			height:80px;\
+			border-radius: 10px;\
+			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
+			background:#fff;\
+			font-size: xx-large;\
+			font-weight: bold;\
+			color:#7d6cfc;\
+			text-align: center;\
+			line-height: 70px;\
+		}\
+		.engine_box.active {\
+			border: 2px solid #7d6cfc;\
+			background: #7d6cfc;\
+			color:#fff;\
+		}\
+		.engine_box img {\
+			width: 70px;\
+			height: 70px;\
+			border-radius: 70px;\
+		}\
+		.setting_box{\
+			position: fixed;\
+			width:50%;\
+			height: 25%;\
+			top:30%;\
+			left: 25%;\
+			background: #fff;\
+			border-radius: 10px;\
+			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
+			text-align: center;\
+			padding: 0;\
+			overflow: hidden;\
+			display: none;\
+		}\
+		.setting_box.active{\
+			display: block;\
+		}\
+		.img_input{\
+			display: inline-block;\
+			vertical-align: middle;\
+			float:left;\
+			width:30%;\
+			line-height: 25vh;\
+			background: #f1f1f1;\
+			font-size : larger;\
+			color: #ccc;\
+		}\
+		.info_input{\
+			display: inline-block;\
+			box-sizing: border-box;\
+			float:right;\
+			width:70%;\
+			height: 100%;\
+			padding: 5vh;\
+			text-align: center;\
+			vertical-align: middle;\
+			background: #f6f6f6;\
+		}\
+		.info_input span{\
+			display: inline-block;\
+			width:100%;\
+			padding: 1vh 1vw 1vh 1vw;\
+			color:#aaa;\
+		}\
+		.info_input span input{\
+			color:#ccc;\
+			border: 0;\
+		}\
+		.info_input ul{\
+			display: flex;\
+			flex-flow: row nowrap;\
+			justify-content: center;\
+		}\
+		.info_input ul li{\
+			float: right;\
+			margin:2%;\
+			color:#fff;\
+			list-style: none;\
+			border: 0;\
+			background: #ccc;\
+			width:50px;\
+		}\
+		.info_input ul li:hover{\
+			background: #7d6cfc;\
+			cursor: pointer;\
+		}\
 	</style>";
-
-	var script="<script>\
-	function search(){\
-  		var input_box = document.getElementsByClassName('input_box')[0];\
-  		var content_box = document.getElementsByClassName('content_box')[0];\
-  		input_box.setAttribute('class','input_box active');\
-  		content_box.setAttribute('class','content_box active');\
-  		search_engine=[%search_engine%];\
-  		var tag_box=document.getElementsByClassName('tag_box')[0];\
-  		var browser_box=document.getElementsByClassName('browser_box')[0];\
-  		tag_box.children[0].innerHTML='';\
-  		browser_box.innerHTML='';\
-  		var i=0;\
-  		for (engine in search_engine){\
-  			var key=input_box.children[1].value;\
-  			var url=search_engine[engine].replace('{%s}',key);\
-  			var tag=document.createElement('li');\
-  			tag.innerHTML=engine;\
-  			tag.index=i;\
-  			var frame=document.createElement('iframe');\
-  			frame.src=url;\
-  			frame.index=i;\
-  			if(i!=0){frame.setAttribute('class','content_frame');}else{frame.setAttribute('class','content_frame active');};\
-  			tag_box.children[0].appendChild(tag);\
-  			browser_box.appendChild(frame);\
-  			tag.onclick=function(){\
-  				var tag_list=tag_box.children[0].children;\
-  				var frame_list=browser_box.children;\
-  				for(var t=0;t<tag_list.length;t++){\
-  					frame_list[t].setAttribute('class','content_frame');\
-  				};\
-  				frame_list[this.index].setAttribute('class','content_frame active');\
-  				};\
-  			i+=1;\
-   			};\
-   		}\
-  		</script>";
-  	script=script.replace("[%search_engine%]",JSON.stringify(search_engine));
+		function search(){
+			  var key=document.getElementsByTagName('input')[0].value;
+			  var engine_list=document.getElementsByClassName("engine_box active");
+			  if(engine_list.length!=0){
+			    for(var i=0;i<engine_list.length;i++){
+			      GM_openInTab(engine_list[i].getAttribute('data-url').replace('{%s}',key));
+			    }}
+			    else{
+			      GM_openInTab("https://www.baidu.com/s?wd={%s}".replace('{%s}',key));
+			    }
+			  }
+		function show_setting_page(){
+			  document.getElementsByClassName('setting_box')[0].classList.toggle('active');
+			  document.getElementsByClassName('img_input')[0].innerHTML="icon";
+			  document.getElementById('url_input').value="";
+			  document.getElementById('name_input').value="";
+			}
+		function add_engine(){
+			  var container=document.getElementsByClassName('tag_box')[0].children[0];
+			  var url=document.getElementById('url_input').value;
+			  var domain=url.split('/');
+			  if(domain[2]){
+			    var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
+			    var name_input=document.getElementById('name_input');
+			    name_input.value=domain[2].split('.').slice(-2)[0];}
+			    else{
+			    var icon_url='';
+			  }
+			  var img=document.createElement('img');
+			  img.setAttribute('src',icon_url);
+			  var icon_container=document.getElementsByClassName('img_input')[0];
+			  icon_container.innerHTML="<img width=100% height=100% src={%img%}>".replace('{%img%}',icon_url);
+			  return icon_url;
+			}
+		function save_engine(){
+			  var container=document.getElementsByClassName('tag_box')[0].children[0];
+			  var url=document.getElementById('url_input').value;
+			  var icon_url=add_engine();
+			  var site_name=icon_url.split('/')[2].split('.').slice(-2)[0];
+			  var img=document.createElement('img');
+			  img.setAttribute('src',icon_url);
+			  img.setAttribute('alt',site_name);
+			  img.setAttribute("onerror","this.parentNode.innerHTML='site_name'".replace('site_name',site_name));
+			  var li=document.createElement('li')
+			  li.setAttribute("class","engine_box");
+			  li.setAttribute("onclick","this.classList.toggle('active')");
+			  li.setAttribute("ondblclick","this.parentNode.removeChild(this);delete pre_search_engine[this.alt]");
+			  li.setAttribute("data-url",url);
+			  li.appendChild(img);
+			  container.insertBefore(li,container.lastElementChild);
+			  document.getElementsByClassName('setting_box')[0].classList.toggle('active');
+			}
+		function init(){
+			  for(var engine in pre_search_engine){
+			    var domain=pre_search_engine[engine].split('/');
+			    var site_name=domain[2].split('.').slice(-2)[0]
+			    if(domain[2]){
+			      var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
+			    }else{
+			      var icon_url='';
+			    }
+			    var container=document.getElementsByClassName('tag_box')[0].children[0];
+			    var img=document.createElement('img');
+			    img.setAttribute('src',icon_url);
+			    img.setAttribute('alt',site_name);
+			    var li=document.createElement('li')
+			    li.setAttribute("class","engine_box");
+			    li.setAttribute("onclick","this.classList.toggle('active')");
+			    li.setAttribute("ondblclick","this.parentNode.removeChild(this);delete pre_search_engine[this.alt]");
+			    li.setAttribute("data-url",pre_search_engine[engine]);
+			    li.appendChild(img);
+			    container.insertBefore(li,container.lastElementChild);
+			  }
+			}
     $button.find('li').eq(0).click(function(){
-    	var w=window.open("about:blank#casebrowser");
-    	w.document.write(css+script+frame);
+		document.getElementsByTagName('html')[0].innerHTML="<head>"+css+"</head>"+frame;
+
+		init();
     });
 
 

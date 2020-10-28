@@ -222,390 +222,386 @@
     document.getElementsByTagName("body")[0].appendChild(button);
 
 	//search_tab
-  //   var frame="<body>\
-	// 	<div class='hover_frame'>\
-	// 	  <div class='input_box'>\
-	// 	      <h1>CASEBROWSER</h1>\
-	// 	      <input type='text' value='请输入关键词或网址'\
-	// 	        onfocus='if(this.value==\"请输入关键词或网址\"){this.value=\"\";}'\
-	// 	        onblur='if(this.value==\"\"){this.value=\"请输入关键词或网址\";}'\
-	// 	        />\
-	// 	      <button>搜索</button>\
-	// 	  </div>\
-	// 	  <div class='tag_box'>\
-	// 	    <ul>\
-	// 	      <li class='engine_box'>+</li>\
-	// 	    </ul>\
-	// 	  </div>\
-	// 	  <div class='setting_box'>\
-	// 	    <span class='img_input'>icon</span>\
-	// 	    <div class='info_input'>\
-	// 	    <span>网站域名：<input id='name_input' type=text disabled='disabled'></span>\
-	// 	    <span>搜索地址：<input id='url_input' type=text onkeypress='if(event.which==13){add_engine()}'></span>\
-	// 	    <br>\
-	// 	    <ul>\
-	// 	    </ul>\
-	// 	  </div>\
-	// 	  </div>\
-	// 	</body>";
-  //   var css="<style>\
-	// 	.hover_frame{\
-	// 		position:fixed;\
-	// 		background: linear-gradient(#7d6cfc, #c63cc6);\
-	// 		width:100%;\
-	// 		height:100%;\
-	// 		left:0%;\
-	// 		top:0%;\
-	// 		overflow: hidden;\
-	// 		overflow-y: scroll;\
-	// 		z-index:9998;\
-	// 	}\
-	// 	.hover_frame::-webkit-scrollbar{\
-	// 		width:0;\
-	// 	}\
-	// 	.input_box {\
-	// 			padding-top: 8%;\
-	// 			width: 100%;\
-	// 			text-align: center;\
-	// 		}\
-	// 	.input_box.active {\
-	// 			padding-top: 0;\
-	// 		}\
-	// 		.input_box h1{\
-	// 		color: #fff;\
-	// 		text-align: center;\
-	// 		font-size:250%;\
-	// 	}\
-	// 	.input_box input {\
-	// 			min-width: 60%;\
-	// 			height: 30px;\
-	// 			border-radius: 5px;\
-	// 			border: 0;\
-	// 			line-height: 30px;\
-	// 			color: gray;\
-	// 			padding-left: 10px;\
-	// 		}\
-	// 	.input_box button {\
-	// 			height: 30px;\
-	// 			min-width: 4%;\
-	// 			border-radius: 5px;\
-	// 			border: 0;\
-	// 			background: #fff;\
-	// 			margin: 0 0 0 10px;\
-	// 			line-height: 30px;\
-	// 		}\
-	// 	.input_box  *:focus {\
-	// 			border: 0;\
-	// 			background: #ecf0f1;\
-	// 			outline: none;\
-	// 		}\
-	// 	.tag_box {\
-	// 		position: relative;\
-	// 		margin: 2% 10% 0 10%;\
-	// 		width: 80%;\
-	// 		border-style: none;\
-	// 	}\
-	// 	.tag_box ul {\
-	// 		padding: 0;\
-	// 		margin: 2% 8% 0 8%;\
-	// 		list-style: none;\
-	// 	}\
-	// 	.tag_box ul li:hover {\
-	// 		border: 2px solid #7d6cfc;\
-	// 		cursor: pointer\
-	// 	}\
-	// 	.engine_box {\
-	// 		display: inline-block;\
-	// 		overflow: hidden;\
-	// 		float:left;\
-	// 		box-sizing: border-box;\
-	// 		margin:2%;\
-	// 		padding: 5px;\
-	// 		width: 16%;\
-	// 		height:80px;\
-	// 		border-radius: 10px;\
-	// 		box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
-	// 		background:#fff;\
-	// 		font-size: xx-large;\
-	// 		font-weight: bold;\
-	// 		color:#7d6cfc;\
-	// 		text-align: center;\
-	// 		line-height: 70px;\
-	// 	}\
-	// 	.engine_box.active {\
-	// 		border: 2px solid #7d6cfc;\
-	// 		background: #7d6cfc;\
-	// 		color:#fff;\
-	// 	}\
-	// 	.engine_box img {\
-	// 		width: 70px;\
-	// 		height: 70px;\
-	// 		border-radius: 70px;\
-	// 	}\
-	// 	.setting_box{\
-	// 		position: fixed;\
-	// 		width:50%;\
-	// 		height: 25%;\
-	// 		top:30%;\
-	// 		left: 25%;\
-	// 		background: #fff;\
-	// 		border-radius: 10px;\
-	// 		box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
-	// 		text-align: center;\
-	// 		padding: 0;\
-	// 		overflow: hidden;\
-	// 		display: none;\
-	// 	}\
-	// 	.setting_box.active{\
-	// 		display: block;\
-	// 	}\
-	// 	.img_input{\
-	// 		display: inline-block;\
-	// 		vertical-align: middle;\
-	// 		float:left;\
-	// 		width:30%;\
-	// 		line-height: 25vh;\
-	// 		background: #f1f1f1;\
-	// 		font-size : larger;\
-	// 		color: #ccc;\
-	// 	}\
-	// 	.info_input{\
-	// 		display: inline-block;\
-	// 		box-sizing: border-box;\
-	// 		float:right;\
-	// 		width:70%;\
-	// 		height: 100%;\
-	// 		padding: 5vh;\
-	// 		text-align: center;\
-	// 		vertical-align: middle;\
-	// 		background: #f6f6f6;\
-	// 	}\
-	// 	.info_input span{\
-	// 		display: inline-block;\
-	// 		width:100%;\
-	// 		padding: 1vh 1vw 1vh 1vw;\
-	// 		color:#aaa;\
-	// 	}\
-	// 	.info_input span input{\
-	// 		color:#ccc;\
-	// 		border: 0;\
-	// 	}\
-	// 	.info_input ul{\
-	// 		display: flex;\
-	// 		flex-flow: row nowrap;\
-	// 		justify-content: center;\
-	// 	}\
-	// 	.info_input ul li{\
-	// 		float: right;\
-	// 		margin:2%;\
-	// 		color:#fff;\
-	// 		list-style: none;\
-	// 		border: 0;\
-	// 		background: #ccc;\
-	// 		width:50px;\
-	// 	}\
-	// 	.info_input ul li:hover{\
-	// 		background: #7d6cfc;\
-	// 		cursor: pointer;\
-	// 	}\
-	// </style>";
-	// 	function search(){
-	// 		  var key=document.getElementsByTagName('input')[0].value;
-	// 		  var engine_list=document.getElementsByClassName("engine_box active");
-	// 		  if(engine_list.length!=0){
-	// 		    for(var i=0;i<engine_list.length;i++){
-	// 		      GM_openInTab(engine_list[i].getAttribute('data-url').replace('{%s}',key));
-	// 		    }}
-	// 		    else{
-	// 		      GM_openInTab("https://www.baidu.com/s?wd={%s}".replace('{%s}',key));
-	// 		    }
-	// 		  }
-	// 	function show_setting_page(){
-	// 		  document.getElementsByClassName('setting_box')[0].classList.toggle('active');
-	// 		  document.getElementsByClassName('img_input')[0].innerHTML="icon";
-	// 		  document.getElementById('url_input').value="";
-	// 		  document.getElementById('name_input').value="";
-	// 			var ul=document.getElementsByTagName('ul')[1];
-	// 			var li_1=document.createElement('li');
-	// 			li_1.innerHTML="确定";
-	// 			li_1.onclick=function(){add_engine()};
-	// 			ul.appendChild(li_1);
-	// 			var li_2=document.createElement('li');
-	// 			li_2.innerHTML="取消";
-	// 			li_2.onclick=function(){document.getElementsByClassName("setting_box")[0].classList.toggle('active');}
-	// 			ul.appendChild(li_2);
-	// 			var li_3=document.createElement('li');
-	// 			li_3.innerHTML="保存";
-	// 			li_3.onclick=function(){save_engine()};
-	// 			ul.appendChild(li_3);
-	// 		}
-	// 	function add_engine(){
-	// 		  var container=document.getElementsByClassName('tag_box')[0].children[0];
-	// 		  var url=document.getElementById('url_input').value;
-	// 		  var domain=url.split('/');
-	// 		  if(domain[2]){
-	// 		    var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
-	// 		    var name_input=document.getElementById('name_input');
-	// 		    name_input.value=domain[2].split('.').slice(-2)[0];}
-	// 		    else{
-	// 		    var icon_url='';
-	// 		  }
-	// 		  var img=document.createElement('img');
-	// 		  img.setAttribute('src',icon_url);
-	// 		  var icon_container=document.getElementsByClassName('img_input')[0];
-	// 		  icon_container.innerHTML="<img width=100% height=100% src={%img%}>".replace('{%img%}',icon_url);
-	// 		  return icon_url;
-	// 		}
-	// 	function save_engine(){
-	// 		  var container=document.getElementsByClassName('tag_box')[0].children[0];
-	// 		  var url=document.getElementById('url_input').value;
-	// 		  var icon_url=add_engine();
-	// 		  var site_name=icon_url.split('/')[2].split('.').slice(-2)[0];
-	// 		  var img=document.createElement('img');
-	// 		  img.setAttribute('src',icon_url);
-	// 		  img.setAttribute('alt',site_name);
-	// 		  img.setAttribute("onerror","this.parentNode.innerHTML='site_name'".replace('site_name',site_name));
-	// 		  var li=document.createElement('li')
-	// 		  li.setAttribute("class","engine_box");
-	// 		  li.setAttribute("onclick","this.classList.toggle('active')");
-	// 		  li.setAttribute("ondblclick","this.parentNode.removeChild(this);delete pre_search_engine[this.alt]");
-	// 		  li.setAttribute("data-url",url);
-	// 		  li.appendChild(img);
-	// 		  container.insertBefore(li,container.lastElementChild);
-	// 		  document.getElementsByClassName('setting_box')[0].classList.toggle('active');
-	// 		}
-	// 	function init(){
-	// 		  for(var engine in pre_search_engine){
-	// 		    var domain=pre_search_engine[engine].split('/');
-	// 		    var site_name=domain[2].split('.').slice(-2)[0]
-	// 		    if(domain[2]){
-	// 		      var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
-	// 		    }else{
-	// 		      var icon_url='';
-	// 		    }
-	// 		    var container=document.getElementsByClassName('tag_box')[0].children[0];
-	// 		    var img=document.createElement('img');
-	// 		    img.setAttribute('src',icon_url);
-	// 		    img.setAttribute('alt',site_name);
-	// 		    var li=document.createElement('li')
-	// 		    li.setAttribute("class","engine_box");
-	// 		    li.setAttribute("onclick","this.classList.toggle('active')");
-	// 		    li.setAttribute("ondblclick","this.parentNode.removeChild(this);delete pre_search_engine[this.alt]");
-	// 		    li.setAttribute("data-url",pre_search_engine[engine]);
-	// 		    li.appendChild(img);
-	// 		    container.insertBefore(li,container.lastElementChild);
-	// 		  }
-	// 		}
-  //   button.getElementsByTagName('li')[0].onclick=function(){
-	// 	document.getElementsByTagName('html')[0].innerHTML="<head>"+css+"</head>"+frame;
-	// 	document.getElementsByTagName('button')[0].onclick=function(){search()};
-	// 	document.getElementsByTagName('input')[0].onkeydown=function(){
-	// 		if(event.which==13){return search();}};
-	// 	document.getElementsByClassName('engine_box').onclick=function(){show_setting_page()};
-	//
-	// 	init();
-  //   };
-	//
-	//
-  //   // img_download
-  //   button.getElementsByTagName('li')[1].onclick=function(){
-  //   	var scrollHeight = document.documentElement.scrollHeight;
-  //   	var wait_time=4000
-  //   	if ((scrollHeight-document.documentElement.scrollTop)>2*window.height){
-	// 			window.scrollTo({top:scrollHeight,behavior:"smooth"});}
-  // 		else{wait_time=0}
-  // 		setTimeout(function(){
-	// 			var img_page=document.createElement('div');
-	// 			img_page.setAttribute("class","img_page");
-  // 		  img_page.innerHTML="<div></div><ul><li>关闭</li><li>全选</li><li>下载</li></ul>");
-  // 			var content_class="html";
-  //   		for(var site in content_setting){
-  //   			if (document.domain.includes(site)){
-  //                   if(document.getElementsByClassName(content_setting[site]).length!=0){
-  //   				content_class=content_setting[site];}
-  //   			}
-  //   		}
-  //   		var img_list=document.getElementsByClassName(content_class)[0].getElementsByTagName('img');
-  //   		for(var i=0;i<img_list.length;i++){
-  //   			var img_url=img_list[i].src;
-  //   			var img=document.createElement('img');
-  //   			img.setAttribute("src",img_url);
-	// 				var img_box=document.createElement('div');
-	// 				img_box.setAttribute("class","img_box");
-  //   			img_box.innerHTML="<p></p>";
-  //   			var img_width=img.naturalWidth;
-  //   			var img_height=img.naturalHeight;
-  //   			img_box.append(img);
-  //   			img_box.getElementsByTagName('p')[0].innerHTML=img_width+'x'+img_height;
-  //   			img_box.onclick=function(){this.toggleClass("selected")};
-  //   			img_page.append(img_box);
-  //   		}
-  //   		document.getElementsByTagName('body')[0].appendChild(img_page);
-  //   		img_page.getElementsByTagName('li')[0].onclick=function(){$img_page.remove()};
-  //   		img_page.getElementsByTagName('li')[1].onclick=function(){
-  //   			if(this.innerHTML=='全选'){
-  //   				this.innerHTML='取消';
-  //   				document.getElementsByClassName('img_box')[0].setAttribute("class","img_box selected");}
-  //   			else{
-  //   				this.innerHTML='全选';
-  //   				document.getElementsByClassName('img_box')[0].setAttribute("class","img_box");}
-  //   			};
-  //   		img_page.getElementsByTagName('li')[2].onclick=function(){
-  //   			var selected_imgs=document.getElementsByClassName('selected');
-  //   			for(var m=0;m<selected_imgs.length;m++){
-	// 					var i=selected_imgs[m].getElementsByTagName('img')[0]
-  //   				var url=i.getAttribute('src');
-  //   				var name=url.split('?')[0].split('/').slice(-1)[0];
-  //   				GM_download(url,name);
-  //   			}
-  //   		};
-  //   	},wait_time);
-  //   };
-	//
-  //   //artical_download
-  //   button.getElementsByTagName('li')[2].onclick=function(){
-	// 		var scrollHeight = document.documentElement.scrollHeight;
-  //   	var wait_time=4000
-  //   	if ((scrollHeight-document.documentElement.scrollTop)>2*window.height){
-	// 			window.scrollTo({top:scrollHeight,behavior:"smooth"});}
-  // 		else{wait_time=0}
-  // 		setTimeout(function(){
-	// 		var content_style=document.createElement('style')
-  //   		content_style.innerHTML="<style>\
-  //   		.title{\
-  //   		font-family: microsoft yahei!important;\
-  //   		font-size:34px;\
-  //   		font-weight: 700;\
-  //   		min-height: 46px;\
-  //   		color:#333;\
-	// 		}\
-	// 		img{max-height: 90%}\
-	// 		a{color:#333;text-decoration:none}\
-	// 		.content{margin: 0 auto;width: 100%;text-align:center;}\
-	// 		</style>"
-	// 		var content_page=document.createElement('div')
-	// 		content_page.setAttribute("class","content")
-  //   	content_page.appendChild(content_style);
-	// 		var title=document.createElement('a')
-	// 		title.innerHTML="<h1></h1>";
-	// 		title.getElementsByTagName('h1')[0].innerHTML=document.title
-	// 		title.getElementsByTagName('h1')[0].setAttribute("class","title");
-	// 		title.setAttribute("href",window.location.href);
-  //   	content_page.appendChild(title);
-  //   	var content_class="body";
-  //     var artical=document.getElementsByClassName(content_class)[0].cloneNode();
-  //   		for(var site in content_setting){
-  //   			if (document.domain.includes(site)&&(document.getElementsByClassName(content_setting[site]).length!=0)){
-  //                       content_class=content_setting[site];
-  //                       artical=document.getElementsByClassName(content_class)[0].cloneNode();
-  //                       artical.getElementsByTagName('head')[0].remove();
-  //                       artical.getElementsByTagName('script')[0].remove();
-  //                       content_page.appendChild(artical);}
-  //               else{content_page=artical;}
-  //           }
-  //           content_page.print({globalStyles:true,noPrintSelector: ".hover_button",});
-  //   	},wait_time);
-  //   };
+    var frame="<body>\
+		<div class='hover_frame'>\
+		  <div class='input_box'>\
+		      <h1>CASEBROWSER</h1>\
+		      <input type='text' value='请输入关键词或网址'\
+		        onfocus='if(this.value==\"请输入关键词或网址\"){this.value=\"\";}'\
+		        onblur='if(this.value==\"\"){this.value=\"请输入关键词或网址\";}'\
+		        />\
+		      <button>搜索</button>\
+		  </div>\
+		  <div class='tag_box'>\
+		    <ul>\
+		      <li class='engine_box'>+</li>\
+		    </ul>\
+		  </div>\
+		  <div class='setting_box'>\
+		    <span class='img_input'>icon</span>\
+		    <div class='info_input'>\
+		    <span>网站域名：<input id='name_input' type=text disabled='disabled'></span>\
+		    <span>搜索地址：<input id='url_input' type=text onkeypress='if(event.which==13){add_engine()}'></span>\
+		    <br>\
+		    <ul>\
+		    </ul>\
+		  </div>\
+		  </div>\
+		</body>";
+    var css="<style>\
+		.hover_frame{\
+			position:fixed;\
+			background: linear-gradient(#7d6cfc, #c63cc6);\
+			width:100%;\
+			height:100%;\
+			left:0%;\
+			top:0%;\
+			overflow: hidden;\
+			overflow-y: scroll;\
+			z-index:9998;\
+		}\
+		.hover_frame::-webkit-scrollbar{\
+			width:0;\
+		}\
+		.input_box {\
+				padding-top: 8%;\
+				width: 100%;\
+				text-align: center;\
+			}\
+		.input_box.active {\
+				padding-top: 0;\
+			}\
+			.input_box h1{\
+			color: #fff;\
+			text-align: center;\
+			font-size:250%;\
+		}\
+		.input_box input {\
+				min-width: 60%;\
+				height: 30px;\
+				border-radius: 5px;\
+				border: 0;\
+				line-height: 30px;\
+				color: gray;\
+				padding-left: 10px;\
+			}\
+		.input_box button {\
+				height: 30px;\
+				min-width: 4%;\
+				border-radius: 5px;\
+				border: 0;\
+				background: #fff;\
+				margin: 0 0 0 10px;\
+				line-height: 30px;\
+			}\
+		.input_box  *:focus {\
+				border: 0;\
+				background: #ecf0f1;\
+				outline: none;\
+			}\
+		.tag_box {\
+			position: relative;\
+			margin: 2% 10% 0 10%;\
+			width: 80%;\
+			border-style: none;\
+		}\
+		.tag_box ul {\
+			padding: 0;\
+			margin: 2% 8% 0 8%;\
+			list-style: none;\
+		}\
+		.tag_box ul li:hover {\
+			border: 2px solid #7d6cfc;\
+			cursor: pointer\
+		}\
+		.engine_box {\
+			display: inline-block;\
+			overflow: hidden;\
+			float:left;\
+			box-sizing: border-box;\
+			margin:2%;\
+			padding: 5px;\
+			width: 16%;\
+			height:80px;\
+			border-radius: 10px;\
+			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
+			background:#fff;\
+			font-size: xx-large;\
+			font-weight: bold;\
+			color:#7d6cfc;\
+			text-align: center;\
+			line-height: 70px;\
+		}\
+		.engine_box.active {\
+			border: 2px solid #7d6cfc;\
+			background: #7d6cfc;\
+			color:#fff;\
+		}\
+		.engine_box img {\
+			width: 70px;\
+			height: 70px;\
+			border-radius: 70px;\
+		}\
+		.setting_box{\
+			position: fixed;\
+			width:50%;\
+			height: 25%;\
+			top:30%;\
+			left: 25%;\
+			background: #fff;\
+			border-radius: 10px;\
+			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);\
+			text-align: center;\
+			padding: 0;\
+			overflow: hidden;\
+			display: none;\
+		}\
+		.setting_box.active{\
+			display: block;\
+		}\
+		.img_input{\
+			display: inline-block;\
+			vertical-align: middle;\
+			float:left;\
+			width:30%;\
+			line-height: 25vh;\
+			background: #f1f1f1;\
+			font-size : larger;\
+			color: #ccc;\
+		}\
+		.info_input{\
+			display: inline-block;\
+			box-sizing: border-box;\
+			float:right;\
+			width:70%;\
+			height: 100%;\
+			padding: 5vh;\
+			text-align: center;\
+			vertical-align: middle;\
+			background: #f6f6f6;\
+		}\
+		.info_input span{\
+			display: inline-block;\
+			width:100%;\
+			padding: 1vh 1vw 1vh 1vw;\
+			color:#aaa;\
+		}\
+		.info_input span input{\
+			color:#ccc;\
+			border: 0;\
+		}\
+		.info_input ul{\
+			display: flex;\
+			flex-flow: row nowrap;\
+			justify-content: center;\
+		}\
+		.info_input ul li{\
+			float: right;\
+			margin:2%;\
+			color:#fff;\
+			list-style: none;\
+			border: 0;\
+			background: #ccc;\
+			width:50px;\
+		}\
+		.info_input ul li:hover{\
+			background: #7d6cfc;\
+			cursor: pointer;\
+		}\
+	</style>";
+		function search(){
+			  var key=document.getElementsByTagName('input')[0].value;
+			  var engine_list=document.getElementsByClassName("engine_box active");
+			  if(engine_list.length!=0){
+			    for(var i=0;i<engine_list.length;i++){
+			      GM_openInTab(engine_list[i].getAttribute('data-url').replace('{%s}',key));
+			    }}
+			    else{
+			      GM_openInTab("https://www.baidu.com/s?wd={%s}".replace('{%s}',key));
+			    }
+			  }
+		function show_setting_page(){
+			  document.getElementsByClassName('setting_box')[0].classList.toggle('active');
+			  document.getElementsByClassName('img_input')[0].innerHTML="icon";
+			  document.getElementById('url_input').value="";
+			  document.getElementById('name_input').value="";
+				var ul=document.getElementsByTagName('ul')[1];
+				var li_1=document.createElement('li');
+				li_1.innerHTML="确定";
+				li_1.onclick=function(){add_engine()};
+				ul.appendChild(li_1);
+				var li_2=document.createElement('li');
+				li_2.innerHTML="取消";
+				li_2.onclick=function(){document.getElementsByClassName("setting_box")[0].classList.toggle('active');}
+				ul.appendChild(li_2);
+				var li_3=document.createElement('li');
+				li_3.innerHTML="保存";
+				li_3.onclick=function(){save_engine()};
+				ul.appendChild(li_3);
+			}
+		function add_engine(){
+			  var container=document.getElementsByClassName('tag_box')[0].children[0];
+			  var url=document.getElementById('url_input').value;
+			  var domain=url.split('/');
+			  if(domain[2]){
+			    var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
+			    var name_input=document.getElementById('name_input');
+			    name_input.value=domain[2].split('.').slice(-2)[0];}
+			    else{
+			    var icon_url='';
+			  }
+			  var img=document.createElement('img');
+			  img.setAttribute('src',icon_url);
+			  var icon_container=document.getElementsByClassName('img_input')[0];
+			  icon_container.innerHTML="<img width=100% height=100% src={%img%}>".replace('{%img%}',icon_url);
+			  return icon_url;
+			}
+		function save_engine(){
+			  var container=document.getElementsByClassName('tag_box')[0].children[0];
+			  var url=document.getElementById('url_input').value;
+			  var icon_url=add_engine();
+			  var site_name=icon_url.split('/')[2].split('.').slice(-2)[0];
+			  var img=document.createElement('img');
+			  img.setAttribute('src',icon_url);
+			  img.setAttribute('alt',site_name);
+			  img.setAttribute("onerror","this.parentNode.innerHTML='site_name'".replace('site_name',site_name));
+			  var li=document.createElement('li')
+			  li.setAttribute("class","engine_box");
+			  li.setAttribute("onclick","this.classList.toggle('active')");
+			  li.setAttribute("ondblclick","this.parentNode.removeChild(this);delete pre_search_engine[this.alt]");
+			  li.setAttribute("data-url",url);
+			  li.appendChild(img);
+			  container.insertBefore(li,container.lastElementChild);
+			  document.getElementsByClassName('setting_box')[0].classList.toggle('active');
+			}
+		function init(){
+			  for(var engine in pre_search_engine){
+			    var domain=pre_search_engine[engine].split('/');
+			    var site_name=domain[2].split('.').slice(-2)[0]
+			    if(domain[2]){
+			      var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
+			    }else{
+			      var icon_url='';
+			    }
+			    var container=document.getElementsByClassName('tag_box')[0].children[0];
+			    var img=document.createElement('img');
+			    img.setAttribute('src',icon_url);
+			    img.setAttribute('alt',site_name);
+			    var li=document.createElement('li')
+			    li.setAttribute("class","engine_box");
+			    li.setAttribute("onclick","this.classList.toggle('active')");
+			    li.setAttribute("ondblclick","this.parentNode.removeChild(this);delete pre_search_engine[this.alt]");
+			    li.setAttribute("data-url",pre_search_engine[engine]);
+			    li.appendChild(img);
+			    container.insertBefore(li,container.lastElementChild);
+			  }
+			}
+    button.getElementsByTagName('li')[0].onclick=function(){
+		document.getElementsByTagName('html')[0].innerHTML="<head>"+css+"</head>"+frame;
+		document.getElementsByTagName('button')[0].onclick=function(){search()};
+		document.getElementsByTagName('input')[0].onkeydown=function(){
+			if(event.which==13){return search();}};
+		document.getElementsByClassName('engine_box').onclick=function(){show_setting_page()};
+
+		init();
+    };
+
+
+    // img_download
+    button.getElementsByTagName('li')[1].onclick=function(){
+    	var scrollHeight = document.documentElement.scrollHeight;
+    	var wait_time=4000
+    	if ((scrollHeight-document.documentElement.scrollTop)>2*window.height){
+				window.scrollTo({top:scrollHeight,behavior:"smooth"});}
+  		else{wait_time=0}
+  		setTimeout(function(){
+				var img_page=document.createElement('div');
+				img_page.setAttribute("class","img_page");
+  		  img_page.innerHTML="<div></div><ul><li>关闭</li><li>全选</li><li>下载</li></ul>");
+  			var content_class="html";
+    		for(var site in content_setting){
+    			if (document.domain.includes(site)){
+                    if(document.getElementsByClassName(content_setting[site]).length!=0){
+    				content_class=content_setting[site];}
+    			}
+    		}
+    		var img_list=document.getElementsByClassName(content_class)[0].getElementsByTagName('img');
+    		for(var i=0;i<img_list.length;i++){
+    			var img_url=img_list[i].src;
+    			var img=document.createElement('img');
+    			img.setAttribute("src",img_url);
+					var img_box=document.createElement('div');
+					img_box.setAttribute("class","img_box");
+    			img_box.innerHTML="<p></p>";
+    			var img_width=img.naturalWidth;
+    			var img_height=img.naturalHeight;
+    			img_box.append(img);
+    			img_box.getElementsByTagName('p')[0].innerHTML=img_width+'x'+img_height;
+    			img_box.onclick=function(){this.toggleClass("selected")};
+    			img_page.append(img_box);
+    		}
+    		document.getElementsByTagName('body')[0].appendChild(img_page);
+    		img_page.getElementsByTagName('li')[0].onclick=function(){$img_page.remove()};
+    		img_page.getElementsByTagName('li')[1].onclick=function(){
+    			if(this.innerHTML=='全选'){
+    				this.innerHTML='取消';
+    				document.getElementsByClassName('img_box')[0].setAttribute("class","img_box selected");}
+    			else{
+    				this.innerHTML='全选';
+    				document.getElementsByClassName('img_box')[0].setAttribute("class","img_box");}
+    			};
+    		img_page.getElementsByTagName('li')[2].onclick=function(){
+    			var selected_imgs=document.getElementsByClassName('selected');
+    			for(var m=0;m<selected_imgs.length;m++){
+						var i=selected_imgs[m].getElementsByTagName('img')[0]
+    				var url=i.getAttribute('src');
+    				var name=url.split('?')[0].split('/').slice(-1)[0];
+    				GM_download(url,name);
+    			}
+    		};
+    	},wait_time);
+    };
+
+    //artical_download
+    $button.find('li').eq(2).click(function(){
+    	var scrollHeight = $('body').prop("scrollHeight");
+    	var wait_time=4000
+    	if (scrollHeight-$('html').scrollTop()>2*$(window).height()){$('html').animate({scrollTop:scrollHeight}, wait_time);}
+  		else{wait_time=0}
+  		setTimeout(function(){
+    		var $content_style=$("<style>\
+    		.title{\
+    		font-family: microsoft yahei!important;\
+    		font-size:34px;\
+    		font-weight: 700;\
+    		min-height: 46px;\
+    		color:#333;\
+			}\
+			img{max-height: 90%}\
+			a{color:#333;text-decoration:none}\
+			.content{margin: 0 auto;width: 100%;text-align:center;}\
+			</style>")
+    		var $content_page=$("<div class='content'></div>")
+    		$content_page.append($content_style);
+    		var $title=$("<a><h1></h1><a>");
+    		$title.find('h1').text(document.title);
+            $title.find('h1').attr("class","title");
+    		$title.find('a').attr("href",window.location.href);
+    		$content_page.append($title);
+    		var content_class="body";
+            var $artical=$(content_class).clone();
+    		for(var site in content_setting){
+    			if (document.domain.includes(site)&&($(content_setting[site]).length!=0)){
+                        content_class=content_setting[site];
+                        $artical=$(content_class).clone();
+                        $artical.find('head').remove();
+                        $artical.find('script').remove();
+                        $content_page.append($artical);}
+                else{$content_page=$artical;}
+            }
+            $content_page.print({globalStyles:true,noPrintSelector: ".hover_button",});
+    	},wait_time);
+    });
 
 
     //settings

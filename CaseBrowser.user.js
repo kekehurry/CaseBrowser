@@ -228,13 +228,12 @@
 		      <input type='text' value='请输入关键词或网址'\
 		        onfocus='if(this.value==\"请输入关键词或网址\"){this.value=\"\";}'\
 		        onblur='if(this.value==\"\"){this.value=\"请输入关键词或网址\";}'\
-		        onkeydown='if(event.which==13){return search()}'\
 		        />\
-		      <button onclick='search()'>搜索</button>\
+		      <button>搜索</button>\
 		  </div>\
 		  <div class='tag_box'>\
 		    <ul>\
-		      <li class='engine_box' onclick='show_setting_page()'>+</li>\
+		      <li class='engine_box'>+</li>\
 		    </ul>\
 		  </div>\
 		  <div class='setting_box'>\
@@ -244,9 +243,9 @@
 		    <span>搜索地址：<input id='url_input' type=text onkeypress='if(event.which==13){add_engine()}'></span>\
 		    <br>\
 		    <ul>\
-		      <li onclick='add_engine()'>确定</li>\
-		      <li onclick='show_setting_page()'>取消</li>\
-		      <li onclick='save_engine()'>保存</li>\
+		      <li>确定</li>\
+		      <li>取消</li>\
+		      <li>保存</li>\
 		    </ul>\
 		  </div>\
 		  </div>\
@@ -357,10 +356,6 @@
 			text-align: center;\
 			padding: 0;\
 			overflow: hidden;\
-			display: none;\
-		}\
-		.setting_box.active{\
-			display: block;\
 		}\
 		.img_input{\
 			display: inline-block;\
@@ -413,8 +408,8 @@
 		}\
 	</style>";
 		function search(){
-			  var key=document.getElementsByTagName('input')[0].value;
-			  var engine_list=document.getElementsByClassName("engine_box active");
+			  var key=$('input').val();
+			  var engine_list=$(".engine_box.active");
 			  if(engine_list.length!=0){
 			    for(var i=0;i<engine_list.length;i++){
 			      GM_openInTab(engine_list[i].getAttribute('data-url').replace('{%s}',key));
@@ -424,26 +419,24 @@
 			    }
 			  }
 		function show_setting_page(){
-			  document.getElementsByClassName('setting_box')[0].classList.toggle('active');
-			  document.getElementsByClassName('img_input')[0].innerHTML="icon";
-			  document.getElementById('url_input').value="";
-			  document.getElementById('name_input').value="";
+			  $('.setting_box').toggle();
+			  $('.img_input').html("icon");
+			  $('#url_input').val("");
+			  $('#name_input').val("");
 			}
 		function add_engine(){
-			  var container=document.getElementsByClassName('tag_box')[0].children[0];
-			  var url=document.getElementById('url_input').value;
+			  var $container=$('.tag_box').find('ul');
+			  var url=$('#url_input').val();
 			  var domain=url.split('/');
 			  if(domain[2]){
 			    var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
-			    var name_input=document.getElementById('name_input');
-			    name_input.value=domain[2].split('.').slice(-2)[0];}
+			    var $name_input=$('#name_input');
+			    $name_input.val(domain[2].split('.').slice(-2)[0])}
 			    else{
 			    var icon_url='';
 			  }
-			  var img=document.createElement('img');
-			  img.setAttribute('src',icon_url);
-			  var icon_container=document.getElementsByClassName('img_input')[0];
-			  icon_container.innerHTML="<img width=100% height=100% src={%img%}>".replace('{%img%}',icon_url);
+			  var $icon_container=$('.img_input');
+			  $icon_container.html("<img width=100% height=100% src={%img%}>".replace('{%img%}',icon_url));
 			  return icon_url;
 			}
 		function save_engine(){
@@ -467,29 +460,30 @@
 		function init(){
 			  for(var engine in pre_search_engine){
 			    var domain=pre_search_engine[engine].split('/');
-			    var site_name=domain[2].split('.').slice(-2)[0]
+			    var site_name=domain[2].split('.').slice(-2)[0];
 			    if(domain[2]){
 			      var icon_url=domain[0]+'//'+domain[2]+'/favicon.ico';
 			    }else{
 			      var icon_url='';
 			    }
-			    var container=document.getElementsByClassName('tag_box')[0].children[0];
-			    var img=document.createElement('img');
-			    img.setAttribute('src',icon_url);
-			    img.setAttribute('alt',site_name);
-			    var li=document.createElement('li')
-			    li.setAttribute("class","engine_box");
-			    li.setAttribute("onclick","this.classList.toggle('active')");
-			    li.setAttribute("ondblclick","this.parentNode.removeChild(this);delete pre_search_engine[this.alt]");
-			    li.setAttribute("data-url",pre_search_engine[engine]);
-			    li.appendChild(img);
-			    container.insertBefore(li,container.lastElementChild);
+			    var $container=$('.tag_box').find('ul').eq(0);
+			    var $img=$('<img>');
+			    var $li=$('<li><img></li>');
+					$li.find('img').attr({src:icon_url,alt:site_name})
+					$li.attr({class:"engine_box",onclick:"this.classList.toggle('active')",
+					ondblclick:"this.parentNode.removeChild(this);delete pre_search_engine[this.alt]","data-url":pre_search_engine[engine]});
+					$container.children().last().before($li);
 			  }
 			}
     $button.find('li').eq(0).click(function(){
-		document.getElementsByTagName('html')[0].innerHTML="<head>"+css+"</head>"+frame;
-
+		$('html').html("<head>"+css+"</head>"+frame);
+		$('button').click(function(){search()});
+		$('input').keydown(function(){if(event.which==13){return search()}});
 		init();
+		$('.tag_box').find('li').last().click(function(){show_setting_page()});
+		$('.setting_box').find('li').eq(0).click(function(){add_engine()});
+		$('.setting_box').find('li').eq(1).click(function(){show_setting_page()});
+		$('.setting_box').find('li').eq(2).click(function(){save_engine()});
     });
 
 

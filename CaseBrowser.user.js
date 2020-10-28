@@ -39,7 +39,8 @@
     if(!content_setting){GM_setValue('content_setting',pre_content_setting);content_setting = GM_getValue('content_setting');}
 
     // create stylesheet
-    var style=".hover_button {\
+    var $style=$("<style>\
+    	.hover_button {\
   			position: fixed;\
   			bottom: 7%;\
   			right: 12%;\
@@ -210,16 +211,14 @@
 		}\
 		input:disabled{\
 			background-color:#ebebeb;\
-		}";
-		var style_tag=document.createElement('style')
-		style_tag.innerHTML=style;
-		document.getElementsByTagName(head)[0].appendChild(style_tag);
+		}\
+    </style>");
+    $("head").append($style);
+
     //hover_button
-		var button=document.createElement('div');
-		button.setAttribute("class","hover_button");
-    button.innerHTML="<span>+</span><ul><li>搜索案例</li><li>下载图片</li><li>下载正文</li><li>插件配置</li></ul>";
-    button.onclick=function(){$button.children('ul').toggle();};
-    document.getElementsByTagName("body")[0].appendChild(button);
+    var $button=$("<div class='hover_button'><span>+</span><ul><li>搜索案例</li><li>下载图片</li><li>下载正文</li><li>插件配置</li></ul></div>");
+    $button.click(function(){$button.children('ul').toggle();});
+    $("body").append($button);
 
 	//search_tab
     var frame="<body>\
@@ -229,12 +228,13 @@
 		      <input type='text' value='请输入关键词或网址'\
 		        onfocus='if(this.value==\"请输入关键词或网址\"){this.value=\"\";}'\
 		        onblur='if(this.value==\"\"){this.value=\"请输入关键词或网址\";}'\
+		        onkeydown='if(event.which==13){return search()}'\
 		        />\
-		      <button>搜索</button>\
+		      <button onclick='search()'>搜索</button>\
 		  </div>\
 		  <div class='tag_box'>\
 		    <ul>\
-		      <li class='engine_box'>+</li>\
+		      <li class='engine_box' onclick='show_setting_page()'>+</li>\
 		    </ul>\
 		  </div>\
 		  <div class='setting_box'>\
@@ -244,6 +244,9 @@
 		    <span>搜索地址：<input id='url_input' type=text onkeypress='if(event.which==13){add_engine()}'></span>\
 		    <br>\
 		    <ul>\
+		      <li onclick='add_engine()'>确定</li>\
+		      <li onclick='show_setting_page()'>取消</li>\
+		      <li onclick='save_engine()'>保存</li>\
 		    </ul>\
 		  </div>\
 		  </div>\
@@ -425,19 +428,6 @@
 			  document.getElementsByClassName('img_input')[0].innerHTML="icon";
 			  document.getElementById('url_input').value="";
 			  document.getElementById('name_input').value="";
-				var ul=document.getElementsByTagName('ul')[1];
-				var li_1=document.createElement('li');
-				li_1.innerHTML="确定";
-				li_1.onclick=function(){add_engine()};
-				ul.appendChild(li_1);
-				var li_2=document.createElement('li');
-				li_2.innerHTML="取消";
-				li_2.onclick=function(){document.getElementsByClassName("setting_box")[0].classList.toggle('active');}
-				ul.appendChild(li_2);
-				var li_3=document.createElement('li');
-				li_3.innerHTML="保存";
-				li_3.onclick=function(){save_engine()};
-				ul.appendChild(li_3);
 			}
 		function add_engine(){
 			  var container=document.getElementsByClassName('tag_box')[0].children[0];
@@ -496,71 +486,61 @@
 			    container.insertBefore(li,container.lastElementChild);
 			  }
 			}
-    button.getElementsByTagName('li')[0].onclick=function(){
+    $button.find('li').eq(0).click(function(){
 		document.getElementsByTagName('html')[0].innerHTML="<head>"+css+"</head>"+frame;
-		document.getElementsByTagName('button')[0].onclick=function(){search()};
-		document.getElementsByTagName('input')[0].onkeydown=function(){
-			if(event.which==13){return search();}};
-		document.getElementsByClassName('engine_box').onclick=function(){show_setting_page()};
 
 		init();
-    };
+    });
 
 
     // img_download
-    button.getElementsByTagName('li')[1].onclick=function(){
-    	var scrollHeight = document.documentElement.scrollHeight;
+    $button.find('li').eq(1).click(function(){
+    	var scrollHeight = $('body').prop("scrollHeight");
     	var wait_time=4000
-    	if ((scrollHeight-document.documentElement.scrollTop)>2*window.height){
-				window.scrollTo({top:scrollHeight,behavior:"smooth"});}
+    	if (scrollHeight-$('html').scrollTop()>2*$(window).height()){$('html').animate({scrollTop:scrollHeight}, wait_time);}
   		else{wait_time=0}
   		setTimeout(function(){
-				var img_page=document.createElement('div');
-				img_page.setAttribute("class","img_page");
-  		  img_page.innerHTML="<div></div><ul><li>关闭</li><li>全选</li><li>下载</li></ul>");
+  			var $img_page=$("<div class='img_page'><div></div><ul><li>关闭</li><li>全选</li><li>下载</li></ul></div>");
   			var content_class="html";
     		for(var site in content_setting){
     			if (document.domain.includes(site)){
-                    if(document.getElementsByClassName(content_setting[site]).length!=0){
+                    if($(content_setting[site]).length!=0){
     				content_class=content_setting[site];}
     			}
     		}
-    		var img_list=document.getElementsByClassName(content_class)[0].getElementsByTagName('img');
+    		var img_list=$(content_class).find('img');
     		for(var i=0;i<img_list.length;i++){
     			var img_url=img_list[i].src;
-    			var img=document.createElement('img');
-    			img.setAttribute("src",img_url);
-					var img_box=document.createElement('div');
-					img_box.setAttribute("class","img_box");
-    			img_box.innerHTML="<p></p>";
-    			var img_width=img.naturalWidth;
-    			var img_height=img.naturalHeight;
-    			img_box.append(img);
-    			img_box.getElementsByTagName('p')[0].innerHTML=img_width+'x'+img_height;
-    			img_box.onclick=function(){this.toggleClass("selected")};
-    			img_page.append(img_box);
+    			var $img=$('<img></img>');
+    			$img.attr("src",img_url);
+    			var $img_box=$("<div class='img_box'><p></p></div>");
+    			var img_width=$img[0].naturalWidth;
+    			var img_height=$img[0].naturalHeight;
+    			$img_box.append($img);
+    			$img_box.find('p').text(img_width+'x'+img_height);
+    			$img_box.click(function(){$(this).toggleClass("selected")});
+    			$img_page.append($img_box);
     		}
-    		document.getElementsByTagName('body')[0].appendChild(img_page);
-    		img_page.getElementsByTagName('li')[0].onclick=function(){$img_page.remove()};
-    		img_page.getElementsByTagName('li')[1].onclick=function(){
-    			if(this.innerHTML=='全选'){
-    				this.innerHTML='取消';
-    				document.getElementsByClassName('img_box')[0].setAttribute("class","img_box selected");}
+    		$('body').append($img_page);
+    		$img_page.find('li').eq(0).click(function(){$img_page.remove()});
+    		$img_page.find('li').eq(1).click(function(){
+    			if($(this).text()=='全选'){
+    				$(this).text('取消');
+    				$('.img_box').addClass("selected");}
     			else{
-    				this.innerHTML='全选';
-    				document.getElementsByClassName('img_box')[0].setAttribute("class","img_box");}
-    			};
-    		img_page.getElementsByTagName('li')[2].onclick=function(){
-    			var selected_imgs=document.getElementsByClassName('selected');
+    				$(this).text('全选');
+    				$('.img_box').removeClass("selected");}
+    			});
+    		$img_page.find('li').eq(2).click(function(){
+    			var selected_imgs=$('.selected').children('img');
     			for(var m=0;m<selected_imgs.length;m++){
-						var i=selected_imgs[m].getElementsByTagName('img')[0]
-    				var url=i.getAttribute('src');
+    				var url=selected_imgs[m].getAttribute('src');
     				var name=url.split('?')[0].split('/').slice(-1)[0];
     				GM_download(url,name);
     			}
-    		};
+    		});
     	},wait_time);
-    };
+    });
 
     //artical_download
     $button.find('li').eq(2).click(function(){
@@ -605,90 +585,85 @@
 
 
     //settings
-    // button.getElementsByTagName('li')[3].onclick=function(){
-		// 	var setting_page=document.createElement('div');
-		// 	setting_page.setAttribute('class','img_page setting_page');
-    // 	setting_page.innerHTML="<div><p><span>搜索引擎<span></p><form></form></div><div><p><span>正文抓取规则<span></p><form></form></div><ul><li>关闭</li><li>重置</li><li>保存</li></ul>");
-    // 	document.getElementsByTagName('body')[0].appendChild(setting_page);
-    // 	setting_page.getElementsByTagName('li')[0].onclick=function(){$setting_page.remove()};
-    // 	setting_page.getEl('li')[1].onclick=function(){
-    // 		GM_setValue('search_engine',pre_search_engine);
-    // 		GM_setValue('content_setting',pre_content_setting);
-    // 		var search_engine = GM_getValue('search_engine');
-  	// 		var content_setting = GM_getValue('content_setting');
-    // 		setting_page.remove();
-    // 		window.location.reload();
-    // 	};
-    // 	for(var engine in search_engine){
-		// 		var input=document.createElement('span');
-    // 		input.innerHTML="<input type='text' class='name_box'/>&nbsp:&nbsp<input type='text' class='value_box'/>");
-		// 		input.getElementsByTagName('input')[0].setAttribute('name',engine);
-		// 		input.getElementsByTagName('input')[0].setAttribute('value',engine);
-		// 		input.getElementsByTagName('input')[0].setAttribute('disabled','disabled');
-   	// 		$input.find('input').eq(1).attr({name:engine,value:search_engine[engine],disabled:'disabled'});
-    // 		$setting_page.find('form').eq(0).append($input);
-    // 	}
-    // 	for(var website in content_setting){
-    // 		var $input_2=$("<span><input type='text' class='name_box'/>&nbsp:&nbsp<input type='text' class='value_box'/></span>");
-    // 		$input_2.find('input').eq(0).attr({name:website,value:website,disabled:'disabled'});
-   	// 		$input_2.find('input').eq(1).attr({name:website,value:content_setting[website],disabled:'disabled'});
-    // 		$setting_page.find('form').eq(1).append($input_2);
-    // 	}
-    // 	function add_engine(){
-    // 		var click_times=0;
-    // 		var $button=$("<span><input type='text' value='网站域名' class='name_box' disabled='disabled'/>&nbsp:&nbsp<input value='搜索地址(只支持https网站)，关键词用{%s}代替' class='value_box' disabled='disabled'/></span>");
-    // 		$button.click(function(){
-    // 			click_times+=1;
-    // 			if (click_times==1){
-    // 				$button.find('input').eq(0).removeAttr('disabled');
-    // 				$button.find('input').eq(1).removeAttr('disabled');
-    // 				$button.find('input').eq(0).attr({value:''});
-    // 				$button.find('input').eq(1).attr({value:''});
-    // 			return add_engine();}}
-    // 		);
-    // 		$setting_page.find('form').eq(0).append($button);
-    // 	}
-    // 	function add_website(){
-    // 		var click_times=0;
-    // 		var $button=$("<span><input type='text' value='网站域名' class='name_box' disabled='disabled'/>&nbsp:&nbsp<input value='\".\"+正文部分class属性名(不要漏了前面的\".\")' class='value_box' disabled='disabled'/></span>");
-    // 		$button.click(function(){
-    // 			click_times+=1;
-    // 			if (click_times==1){
-    // 				$button.find('input').eq(0).removeAttr('disabled');
-    // 				$button.find('input').eq(1).removeAttr('disabled');
-    // 				$button.find('input').eq(0).attr({value:''});
-    // 				$button.find('input').eq(1).attr({value:''});
-    // 			return add_website();}}
-    // 		);
-    // 		$setting_page.find('form').eq(1).append($button);
-    // 	}
-    // 	add_engine();
-    // 	add_website();
-    // 	$setting_page.find('li').eq(2).click(function(){
-    // 		var new_engine_data={};
-    // 		var search_engine_form=$setting_page.find('form').eq(0);
-    // 		var engine_name_list=search_engine_form.find('.name_box');
-    // 		var engine_value_list=search_engine_form.find('.value_box');
-    // 		for(var n=0; n<engine_name_list.length-1;n++){
-    // 			if(engine_value_list[n]){
-    // 				new_engine_data[engine_name_list[n].value]=engine_value_list[n].value;
-    // 			}
-    // 		}
-    // 		var new_setting_data={};
-    // 		var content_setting_form=$setting_page.find('form').eq(1);
-    // 		var setting_name_list=content_setting_form.find('.name_box');
-    // 		var setting_value_list=content_setting_form.find('.value_box');
-    // 		for(var m=0; m<setting_name_list.length-1;m++){
-    // 			if(setting_value_list[m]){
-    // 				new_setting_data[setting_name_list[m].value]=setting_value_list[m].value;
-    // 			}
-    // 		}
-    // 		GM_setValue('search_engine',new_engine_data);
-    // 		GM_setValue('content_setting',new_setting_data);
-    // 		var search_engine = GM_getValue('search_engine');
-  	// 		var content_setting = GM_getValue('content_setting');
-    // 		$setting_page.remove();
-    // 		window.location.reload();
-    // 	});
-    // };
+    $button.find('li').eq(3).click(function(){
+    	var $setting_page=$("<div class='img_page setting_page'><div><p><span>搜索引擎<span></p><form></form></div><div><p><span>正文抓取规则<span></p><form></form></div><ul><li>关闭</li><li>重置</li><li>保存</li></ul></div>");
+    	$('body').append($setting_page);
+    	$setting_page.find('li').eq(0).click(function(){$setting_page.remove()});
+    	$setting_page.find('li').eq(1).click(function(){
+    		GM_setValue('search_engine',pre_search_engine);
+    		GM_setValue('content_setting',pre_content_setting);
+    		var search_engine = GM_getValue('search_engine');
+  			var content_setting = GM_getValue('content_setting');
+    		$setting_page.remove();
+    		window.location.reload();
+    	});
+    	for(var engine in search_engine){
+    		var $input=$("<span><input type='text' class='name_box'/>&nbsp:&nbsp<input type='text' class='value_box'/></span><br>");
+    		$input.find('input').eq(0).attr({name:engine,value:engine,disabled:'disabled'});
+   			$input.find('input').eq(1).attr({name:engine,value:search_engine[engine],disabled:'disabled'});
+    		$setting_page.find('form').eq(0).append($input);
+    	}
+    	for(var website in content_setting){
+    		var $input_2=$("<span><input type='text' class='name_box'/>&nbsp:&nbsp<input type='text' class='value_box'/></span><br>");
+    		$input_2.find('input').eq(0).attr({name:website,value:website,disabled:'disabled'});
+   			$input_2.find('input').eq(1).attr({name:website,value:content_setting[website],disabled:'disabled'});
+    		$setting_page.find('form').eq(1).append($input_2);
+    	}
+    	function add_engine(){
+    		var click_times=0;
+    		var $button=$("<span><input type='text' value='网站域名' class='name_box' disabled='disabled'/>&nbsp:&nbsp<input value='搜索地址(只支持https网站)，关键词用{%s}代替' class='value_box' disabled='disabled'/></span>");
+    		$button.click(function(){
+    			click_times+=1;
+    			if (click_times==1){
+    				$button.find('input').eq(0).removeAttr('disabled');
+    				$button.find('input').eq(1).removeAttr('disabled');
+    				$button.find('input').eq(0).attr({value:''});
+    				$button.find('input').eq(1).attr({value:''});
+    			return add_engine();}}
+    		);
+    		$setting_page.find('form').eq(0).append($button);
+    	}
+    	function add_website(){
+    		var click_times=0;
+    		var $button=$("<span><input type='text' value='网站域名' class='name_box' disabled='disabled'/>&nbsp:&nbsp<input value='\".\"+正文部分class属性名(不要漏了前面的\".\")' class='value_box' disabled='disabled'/></span>");
+    		$button.click(function(){
+    			click_times+=1;
+    			if (click_times==1){
+    				$button.find('input').eq(0).removeAttr('disabled');
+    				$button.find('input').eq(1).removeAttr('disabled');
+    				$button.find('input').eq(0).attr({value:''});
+    				$button.find('input').eq(1).attr({value:''});
+    			return add_website();}}
+    		);
+    		$setting_page.find('form').eq(1).append($button);
+    	}
+    	add_engine();
+    	add_website();
+    	$setting_page.find('li').eq(2).click(function(){
+    		var new_engine_data={};
+    		var search_engine_form=$setting_page.find('form').eq(0);
+    		var engine_name_list=search_engine_form.find('.name_box');
+    		var engine_value_list=search_engine_form.find('.value_box');
+    		for(var n=0; n<engine_name_list.length-1;n++){
+    			if(engine_value_list[n]){
+    				new_engine_data[engine_name_list[n].value]=engine_value_list[n].value;
+    			}
+    		}
+    		var new_setting_data={};
+    		var content_setting_form=$setting_page.find('form').eq(1);
+    		var setting_name_list=content_setting_form.find('.name_box');
+    		var setting_value_list=content_setting_form.find('.value_box');
+    		for(var m=0; m<setting_name_list.length-1;m++){
+    			if(setting_value_list[m]){
+    				new_setting_data[setting_name_list[m].value]=setting_value_list[m].value;
+    			}
+    		}
+    		GM_setValue('search_engine',new_engine_data);
+    		GM_setValue('content_setting',new_setting_data);
+    		var search_engine = GM_getValue('search_engine');
+  			var content_setting = GM_getValue('content_setting');
+    		$setting_page.remove();
+    		window.location.reload();
+    	});
+    });
 })();
